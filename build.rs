@@ -9,15 +9,11 @@ use std::process::Command;
 fn main() {
     generate_bindgen_file();
 
-    if pkg_config::probe_library("mysqlclient").is_ok() {
-        // pkg_config did everything for us
-    } else {
-        let lib_dir = env::var("MYSQLCLIENT_LIB_DIR").ok()
-            .or_else(|| mysql_config_variable("pkglibdir"));
-        if let Some(path) = lib_dir {
-            println!("cargo:rustc-link-search=native={}", path);
-            println!("cargo:rustc-link-lib=mysqlclient");
-        }
+    let lib_dir = env::var("MYSQLCLIENT_LIB_DIR").ok()
+        .or_else(|| mysql_config_variable("pkglibdir"));
+    if let Some(path) = lib_dir {
+        println!("cargo:rustc-link-search=native={}", path);
+        println!("cargo:rustc-link-lib=mysqlclient");
     }
 }
 
