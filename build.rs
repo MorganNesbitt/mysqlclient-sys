@@ -7,13 +7,15 @@ use std::path::Path;
 use std::process::Command;
 
 fn main() {
-    generate_bindgen_file();
-
-    let lib_dir = env::var("MYSQLCLIENT_LIB_DIR").ok()
-        .or_else(|| mysql_config_variable("pkglibdir"));
-    if let Some(path) = lib_dir {
-        println!("cargo:rustc-link-search=native={}", path);
-        println!("cargo:rustc-link-lib=mysqlclient");
+    pkg_config::Config::new().statik(true).probe("mysqlclient").unwrap();
+    println!("cargo:rerun-if-env-changed=MYSQLCLIENT_LIB_DIR");
+    println!("cargo:rerun-if-env-changed=MYSQLCLIENT_LIB_STATIC");
+    
+    if let Ok(lib_dir) = env::var("MYSQLCLIENT_LIB_DIR") {
+        println!("cargo:rustc-link-search=native={}", lib_dir);
+    }
+    if env::var_os("PQ_LIB_STATIC").is_some() {
+        println!("cargo:rustc-link-lib=static=mysqlclient");
     }
 }
 
