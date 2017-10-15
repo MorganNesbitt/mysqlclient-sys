@@ -15,7 +15,7 @@ fn main() {
         println!("cargo:rustc-link-search=native={}", lib_dir);
     }
     if env::var_os("MYSQLCLIENT_LIB_STATIC").is_some() {
-        println!("cargo:rustc-link-lib=static=libmysqlclient");
+        println!("cargo:rustc-link-lib=static=libmysql");
     }
 }
 
