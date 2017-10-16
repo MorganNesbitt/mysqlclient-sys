@@ -7,8 +7,8 @@ use std::path::Path;
 use std::process::Command;
 
 fn main() {
-    pkg_config::Config::new().statik(true).probe("mysqlclient").unwrap();
-    println!("cargo:rustc-link-search=/usr/lib/x86_64-linux-gnu/libmysqlclient.a");
+    println!("cargo:rustc-link-search=native=/usr/lib/x86_64-linux-gnu");
+    println!("cargo:rustc-link-lib=static=mysqlclient");
 }
 
 fn mysql_config_variable(var_name: &str) -> Option<String> {
