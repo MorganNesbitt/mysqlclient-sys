@@ -8,15 +8,7 @@ use std::process::Command;
 
 fn main() {
     pkg_config::Config::new().statik(true).probe("mysqlclient").unwrap();
-    println!("cargo:rerun-if-env-changed=MYSQLCLIENT_LIB_DIR");
-    println!("cargo:rerun-if-env-changed=MYSQLCLIENT_LIB_STATIC");
-    
-    if let Ok(lib_dir) = env::var("MYSQLCLIENT_LIB_DIR") {
-        println!("cargo:rustc-link-search=native={}", lib_dir);
-    }
-    if env::var_os("MYSQLCLIENT_LIB_STATIC").is_some() {
-        println!("cargo:rustc-link-lib=static=libmysql");
-    }
+    println!("cargo:rustc-link-search=/usr/lib/x86_64-linux-gnu/libmysqlclient.a");
 }
 
 fn mysql_config_variable(var_name: &str) -> Option<String> {
