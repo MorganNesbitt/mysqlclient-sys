@@ -5,7 +5,11 @@ authors = ["Sean Griffin <sean@seantheprogrammer.com>"]
 description = "Auto-generated rust bindings for libmysqlclient"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/sgrif/mysqlclient-sys"
+links = "mysqlclient"
 build = "build.rs"
+
+[lib]
+name = "mysqlclient_sys"
 
 [build-dependencies]
 pkg-config = "0.3.9"
